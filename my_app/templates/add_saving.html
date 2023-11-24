@@ -1,0 +1,69 @@
+{% extends './base.html' %}
+{% block content %}
+    {% load static %}
+    {% load crispy_forms_tags %}
+    
+        <title>Django my_app</title>
+        
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+
+    <body>
+        <hi>Add Saving</hi>
+        <div class ="container">
+
+        
+            <form method = "POST">
+                {% csrf_token %}
+                {{form|crispy}}
+
+            <input type="Submit" class="btn-success" >
+            </form>
+
+            {% if msg %}
+                {{msg}}
+
+            {% endif %}
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Saving_date</th>
+                        <th scope="col">Payment_mode</th>
+                        <th scope="col">Saving_year</th>
+                        <th scope="col">Saving_month</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Member</th>
+
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for saving in savings %}
+                        <tr>
+                            <th scope="row">{{saving.id}}</th>
+                            <td>{{saving.saving_date}}</td>
+                            <td>{{saving.payment_mode}}</td>
+                            <td>{{saving.saving_year}}</td>
+                            <td>{{saving.saving_month}}</td>
+                            <td>{{saving.amount}}</td>
+                            <td>{{saving.member}}</td>
+
+                            <td>
+                                <a href="{% url 'edit_saving_page' saving.id %}">Edit</a> |
+                                <a href="{% url 'delete_saving_page' saving.id %}"
+                                onclick="return confirm('Are you sure you want to delete?')">
+                                Delete
+                            </a>
+    
+    
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+       
+{% endblock content %}

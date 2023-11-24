@@ -1,0 +1,49 @@
+<html>
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <head>
+        <title>Django my_app</title>
+       
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">MY App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria>
+
+        
+            <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'index_page' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+        
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_loan_page' %}">Loans</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_member_page' %}">Members</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_saving_page' %}">Savings</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_loan_payment_page' %}">Loan Payments</a>
+            </li>
+
+            
+        </ul>
+    </div>
+    </nav>
+    <div class ="container">
+        {% block content %}
+    
+        {% endblock content %}
+    </div>
+</body>
+</html>
