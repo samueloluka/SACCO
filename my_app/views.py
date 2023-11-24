@@ -3,7 +3,12 @@ from django.shortcuts import render, redirect
 from my_app.forms import MemberForm, SavingForm, LoanForm, Loan_PaymentForm
 from my_app.models import Member, Saving, Loan, Loan_Payment
 
+from django.contrib.auth.forms import UserCreationForm
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+@login_required
 def index_view(request):
         return render(request, 'index.html')
 
@@ -18,20 +23,21 @@ def loan_view(request):
 
 def loan_payment_view(request):
         return render(request, 'loan_payment.html')
-
+@login_required
 def add_member_view(request):
-        message= ''
+        message=''
         if request.method == "POST":
                 member_form = MemberForm(request.POST)
 
                 if member_form.is_valid():
                         member_form.save()
 
-                        message = "Member Added Successfully"
-                        
+                        messages.success(request, "Member Added Successfully")
+                       
 
-        else:
-                member_form = MemberForm()
+       
+        member_form = MemberForm()
+
         members = Member.objects.all()
 
         context = {
@@ -39,11 +45,9 @@ def add_member_view(request):
                 'form':member_form,
                 'msg':message,
                 'members':members
-                
-
         }
         return render(request, "add_member.html", context)
-
+@login_required
 def add_saving_view(request):
         message=''
         if request.method == "POST":
@@ -52,11 +56,11 @@ def add_saving_view(request):
                 if saving_form.is_valid():
                         saving_form.save()
 
-                        message = "Saving Added Successfully"
+                        messages.success(request, "Saving Added Successfully")
                        
 
-        else:
-                saving_form = SavingForm()
+       
+        saving_form = SavingForm()
 
         savings = Saving.objects.all()
 
@@ -67,7 +71,7 @@ def add_saving_view(request):
                 'savings':savings
         }
         return render(request, "add_saving.html", context)
-
+@login_required
 def add_loan_view(request):
         message=''
         if request.method == "POST":
@@ -76,11 +80,11 @@ def add_loan_view(request):
                 if loan_form.is_valid():
                         loan_form.save()
 
-                        message = "Loan Added Successfully"
+                        messages.success(request, "Loan Added Successfully")
                        
 
-        else:
-                loan_form = LoanForm()
+        
+        loan_form = LoanForm()
 
         loans = Loan.objects.all()
 
@@ -91,7 +95,7 @@ def add_loan_view(request):
                 'loans':loans
         }
         return render(request, "add_loan.html", context)
-
+@login_required
 def add_loan_payment_view(request):
         message=''
         if request.method == "POST":
@@ -100,14 +104,14 @@ def add_loan_payment_view(request):
                 if loan_payment_form.is_valid():
                         loan_payment_form.save()
 
-                        message = "Loan_Payment Added Successfully"
+                        messages.success(request, "Loan Payment Added Successfully")
                         
                         
                         
 
 
-        else:
-                loan_payment_form = Loan_PaymentForm()
+        
+        loan_payment_form = Loan_PaymentForm()
 
         loan_payments = Loan_Payment.objects.all()
 
@@ -119,7 +123,7 @@ def add_loan_payment_view(request):
         }
         return render(request, "add_loan_payment.html", context)
 
-
+@login_required
 def edit_member_view(request, member_id):
         message=''
         member = Member.objects.get(id=member_id)
@@ -129,7 +133,7 @@ def edit_member_view(request, member_id):
 
                 if member_form.is_valid():
                         member_form.save()
-                        message = "Changes added Successfully!"
+                        messages.success(request, "Member Edited Successfully")
                         return redirect(add_member_view)
 
                 else:
@@ -147,7 +151,7 @@ def edit_member_view(request, member_id):
 
         return render(request, 'edit_member.html', context)
         
-
+@login_required
 def edit_saving_view(request, saving_id):
         message=''
         saving = Saving.objects.get(id=saving_id)
@@ -157,7 +161,7 @@ def edit_saving_view(request, saving_id):
 
                 if saving_form.is_valid():
                         saving_form.save()
-                        message = "Changes added Successfully"
+                        messages.success(request, "Saving Edited Successfully")
                         return redirect(add_saving_view)
 
                 else:
@@ -174,7 +178,7 @@ def edit_saving_view(request, saving_id):
 
         return render(request, 'edit_saving.html', context)
 
-
+@login_required
 def edit_loan_view(request, loan_id):
         message = ''
         loan = Loan.objects.get(id=loan_id)
@@ -184,7 +188,7 @@ def edit_loan_view(request, loan_id):
 
                 if loan_form.is_valid():
                         loan_form.save()
-                        message = "Changes added Successfully"
+                        messages.success(request, "Loan Edited Successfully")
                         return redirect(add_loan_view)
 
                 else:
@@ -200,7 +204,7 @@ def edit_loan_view(request, loan_id):
         }
 
         return render(request, 'edit_loan.html', context)
-        
+@login_required        
 def edit_loan_payment_view(request, loan_payment_id):
         message=''
         loan_payment = Loan_Payment.objects.get(id=loan_payment_id)
@@ -210,7 +214,7 @@ def edit_loan_payment_view(request, loan_payment_id):
 
                 if loan_payment_form.is_valid():
                         loan_payment_form.save()
-                        message = "Changes added Successfully"
+                        messages.success(request, "Loan Payment Edited Successfully")
                         return redirect(add_loan_payment_view)
 
                 else:
@@ -227,28 +231,28 @@ def edit_loan_payment_view(request, loan_payment_id):
 
         return render(request, 'edit_loan_payment.html', context)
         
-
+@login_required
 def delete_member_view(request, member_id):
         member = Member.objects.get(id=member_id)
 
         member.delete()
 
         return redirect(add_member_view)
-
+@login_required
 def delete_saving_view(request, saving_id):
         saving = Saving.objects.get(id=saving_id)
 
         saving.delete()
 
         return redirect(add_saving_view)
-
+@login_required
 def delete_loan_view(request, loan_id):
         loan = Loan.objects.get(id=loan_id)
 
         loan.delete()
 
         return redirect(add_loan_view)
-
+@login_required
 def delete_loan_payment_view(request, loan_payment_id):
         loan_payment = Loan_Payment.objects.get(id=loan_payment_id)
 
@@ -257,5 +261,22 @@ def delete_loan_payment_view(request, loan_payment_id):
         return redirect(add_loan_payment_view)
 
 
+def sign_up_view(request):
+        if request.method=="POST":
+                sign_up_form=UserCreationForm(request.POST)
+                if sign_up_form.is_valid():
+                        sign_up_form.save()
 
-        
+                        message="User Created Successfully"
+
+                else:
+                        message="Something went wrong"
+
+        else:
+                sign_up_form=UserCreationForm()
+
+        context={
+        'form':sign_up_form
+        }
+
+        return render(request, 'registration/sign_up.html', context)

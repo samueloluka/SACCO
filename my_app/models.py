@@ -6,6 +6,7 @@ class Member(models.Model):
     address = models.CharField(max_length = 28)
     contact = models.CharField(max_length = 15)
     savings_balance = models.IntegerField()
+    photo = models.ImageField(upload_to="photos/")
     def __str__(self):
         return f"{self.member_name}-{self.gender}-{self.address}-{self.contact}-{self.savings_balance}"
 

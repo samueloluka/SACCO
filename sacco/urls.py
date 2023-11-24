@@ -15,13 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
 
-from my_app.views import index_view, saving_view, member_view, loan_view, loan_payment_view, add_member_view, add_saving_view, add_loan_view, add_loan_payment_view, edit_member_view, edit_saving_view, edit_loan_view, edit_loan_payment_view, delete_member_view, delete_saving_view, delete_loan_view, delete_loan_payment_view
+from django.conf.urls.static import static
+
+from my_app.views import index_view, saving_view, member_view, loan_view, loan_payment_view, add_member_view, add_saving_view, add_loan_view, add_loan_payment_view, edit_member_view, edit_saving_view, edit_loan_view, edit_loan_payment_view, delete_member_view, delete_saving_view, delete_loan_view, delete_loan_payment_view, sign_up_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_view, name='index_page'),
+    path('sign_up/', sign_up_view, name='sign_up_page'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path( 'saving', saving_view, name='saving.html'),
     path( 'member', member_view, name='member.html'),
     path( 'loan', loan_view, name='loan.html'),
@@ -43,3 +48,6 @@ urlpatterns = [
 
 
 ]
+
+if settings.DEBUG:
+    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
